@@ -107,13 +107,29 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
   function results() {
     const ulEl = document.createElement('ul');
     imagesSection.appendChild(ulEl);
-     for (let i = 0; i <   Product.items.length; i++) {
+     for (let i = 0; i <   Product.all.length; i++) {
        const liEl = document.createElement('li');
        ulEl.appendChild(liEl);
        liEl.textContent = `${Product.all[i].name} had ${Product.all[i].votes}  and was shown ${Product.all[i].showTimes} times....it's liked by ${Product.all[i].avgLikes}`;
      }
     
   }    
+
+  
+  function rendChart() {
+    const ctx=document.getElementById('chart').getContext('2d');
+    const names=[];
+    const votes=[];
+    const shown=[];
+    const avg=[];
+    for (let i = 0; i < Product.all.length; i++) {
+      names.push(Product.all[i].name);
+      votes.push(Product.all[i].votes);
+      shown.push(Product.all[i].showTimes);
+      avg.push(Product.all[i].avgLikes*100);
+    }
+
+
 
     new Chart(ctx, {
     type: 'bar',
@@ -138,4 +154,4 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
     option
   })
 
-  
+}
