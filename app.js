@@ -13,7 +13,7 @@ const midImage=document.getElementById('mid-image');
 
 
 const imagesSection = document.getElementById('images-section');
-Product.all=[];
+
 
 function Product (name ){
     this.name=name;
@@ -35,7 +35,7 @@ for (let i=0 ; i<names.length; i++){
 }
 
 function render (){
-    const leftIndex = randomNumber(0, Product.all.length - 1);
+    const leftIndex = randomNumber(0, 7);
  
   
     leftImage.src = Product.all[leftIndex].path;
@@ -71,7 +71,7 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
 
     }
   
-    let listenStop =0;
+    let counter =0;
 
   imagesSection.addEventListener('click', clickHanler);
 
@@ -83,18 +83,18 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
 
         if (Product.all[i].name === event.target.title) {
           Product.all[i].votes++;
-          listenStop++;
+          counter++;
          
         }
 
       }
-    if( listenStop === 26){
+    if( counter === 26){
       imagesSection.removeEventListener('click', clickHanler)
       for ( let i=0 ; i<Product.all.length;i++){
         Product.all[i].avgLikes =`${Math.floor((Product.all[i].votes /Product.all[i].showTimes) * 100)}%`;
-        results();
+        
       }
-     
+      result();
     } else {
       render();
     }
@@ -104,13 +104,13 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
   render();
 
 
-  function results() {
+  function result() {
     const ulEl = document.createElement('ul');
     imagesSection.appendChild(ulEl);
-     for (let i = 0; i <   Product.items.length; i++) {
+     for (let i = 0; i <   Product.all.length; i++) {
        const liEl = document.createElement('li');
        ulEl.appendChild(liEl);
-       liEl.textContent = `${Product.all[i].name} had ${Product.all[i].votes}  and was shown ${Product.all[i].showTimes} times....it's liked by ${Product.all[i].avgLikes}`;
+       liEl.textContent = `${Product.all[i].name} have ${Product.all[i].votes}  and was shown ${Product.all[i].showTimes} times and liked by ${Product.all[i].avgLikes}`;
      }
     
   }    
