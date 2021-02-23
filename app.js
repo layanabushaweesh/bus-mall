@@ -35,26 +35,40 @@ for (let i=0 ; i<names.length; i++){
 }
 
 function render (){
-    const leftIndex = randomNumber(0, Product.all.length - 1);
- 
-  
+    let leftIndex = randomNumber(0, Product.all.length - 1);
+    const rightIndex = randomNumber(0, Product.all.length - 1);
+    const midtIndex = randomNumber(0, Product.all.length - 1);
+    preLeft=leftIndex
+    preRight=rightIndex
+
+
+  if ( leftIndex !== rightIndex && leftIndex!== midtIndex  &&  leftIndex !== preLeft ){ 
+
+
     leftImage.src = Product.all[leftIndex].path;
     leftImage.title = Product.all[leftIndex].name;
     leftImage.alt = Product.all[leftIndex].name;
-
+  }
+ 
   
-    const rightIndex = randomNumber(0, Product.all.length - 1);
+
+  if (  rightIndex !== leftIndex && rightIndex !== midtIndex ){
+
 
     rightImage.src = Product.all[rightIndex].path;
     rightImage.title = Product.all[rightIndex].name;
     rightImage.alt = Product.all[rightIndex].name;
 
+  }
 
-const midtIndex = randomNumber(0, Product.all.length - 1);
 
-    midImage.src = Product.all[midtIndex].path;
+if (  midtIndex !== leftIndex && midtIndex !== rightIndex){
+
+midImage.src = Product.all[midtIndex].path;
     midImage.title = Product.all[midtIndex].name;
     midImage.alt = Product.all[midtIndex].name;
+}
+    
 
     for (let i = 0; i < Product.all.length; i++) {
       switch (i) {
@@ -71,7 +85,7 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
 
     }
   
-    let listenStop =0;
+    let counter =0;
 
   imagesSection.addEventListener('click', clickHanler);
 
@@ -83,18 +97,19 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
 
         if (Product.all[i].name === event.target.title) {
           Product.all[i].votes++;
-          listenStop++;
+          counter++;
          
         }
 
       }
-    if( listenStop === 26){
+    if( counter === 26){
       imagesSection.removeEventListener('click', clickHanler)
+      creatChart();
       for ( let i=0 ; i<Product.all.length;i++){
         Product.all[i].avgLikes =`${Math.floor((Product.all[i].votes /Product.all[i].showTimes) * 100)}%`;
-        results();
+       
       }
-     
+      results();
     } else {
       render();
     }
@@ -102,7 +117,7 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
 }
 
   render();
-
+  
 
   function results() {
     const ulEl = document.createElement('ul');
@@ -116,8 +131,10 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
   }    
 
   
-  function rendChart() {
-    const ctx=document.getElementById('chart').getContext('2d');
+  
+  function creatChart() {
+    const ctx = document. getElementById('char').getContext('2d');
+    
     const names=[];
     const votes=[];
     const shown=[];
@@ -128,30 +145,37 @@ const midtIndex = randomNumber(0, Product.all.length - 1);
       shown.push(Product.all[i].showTimes);
       avg.push(Product.all[i].avgLikes*100);
     }
+  
 
 
-
-    new Chart(ctx, {
+  new Chart(ctx, {
     type: 'bar',
     data: {
       labels:names,
       datasets: [{
         label:'votes#',
         barPercentage: 0.5,
-        barThickness: 40,
+        barThickness: 54,
         maxBarThickness: 8,
         minBarLength: 2,
         data: votes
       },{
         label:'views#',
         barPercentage: 0.5,
-        barThickness: 50,
+        barThickness: 45,
         maxBarThickness: 8,
         minBarLength: 2,
-        data: shownTimes
+        data: shown
       }]
     },
-    option
-  })
-
+    options: {
+      scales: {
+        xAxes: [{
+          gridLines: {
+            offsetGridLines: true
+          }
+        }]
+      }
+    }
+  });
 }
