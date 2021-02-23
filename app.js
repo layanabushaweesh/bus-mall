@@ -8,7 +8,7 @@ function randomNumber(min, max) {
 
 const leftImage = document.getElementById('left-image');
 const rightImage = document.getElementById('right-image');
-const midImage=document.getElementById('mid-image');
+  const midImage=document.getElementById('mid-image');
 
 
 
