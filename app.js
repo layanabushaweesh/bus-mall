@@ -1,6 +1,10 @@
 'usestrict'; 
+const orders = document.getElementById('orders');
 
 
+let custVots =0
+console.log(localStorage);
+console.log(Product.all)
 const names = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -24,10 +28,24 @@ function Product (name ){
     this.avgLikes=0;
 
 Product.all.push(this)
+localStorage.setItem("orders",JSON.stringify(Product.all));
 
 }
 
+
 Product.all=[];
+
+
+
+
+
+
+
+
+
+
+
+
 
 for (let i=0 ; i<names.length; i++){
 
@@ -110,6 +128,7 @@ midImage.src = Product.all[midtIndex].path;
        
       }
       results();
+      retrieve();
     } else {
       render();
     }
@@ -179,3 +198,50 @@ midImage.src = Product.all[midtIndex].path;
     }
   });
 }
+
+function renderOrders() {
+  // clear all my current uls to prevent duplicate information
+  orders.textContent = '';
+
+  // go through the array and output the details of each drink in the array
+  for (let i = 0; i < Product.all.length; i++) {
+    const drinkLI = document.createElement('li');
+    const infoP = document.createElement('p');
+    let temp;
+    if (Product.all[i].votes === votes) {
+      votes++;
+    } else if ( Product.all[i].showTimes === showTimes){
+      showTimes++
+    }
+    }
+    infoP.textContent = `${Product.all[i].name} orderd ${Product.all[i].votes} ${Product.all[i].showTimes} with ${Product.all[i].avgLikes}`;
+    drinkLI.appendChild(infoP);
+    orders.appendChild(drinkLI);
+  }
+
+//local storage 
+  function retrieve(){
+    localStorage.removeItem('randid');
+    console.log(localStorage);
+    
+    if(localStorage.length > 0) {
+      const oldVotes = JSON.parse(localStorage.getItem('votes'));
+      const oldViews = JSON.parse(localStorage.getItem('views'));
+      
+      for (let i = 0; i <   Product.all.length; i++) {
+        Product.all[i].votes += oldVotes;
+        Product.all[i].showTimes += oldViews;
+      }
+      // imageVotes.push(oldVotes);
+      // imageViews.push(oldViews);
+      console.log('old votes', oldVotes);
+      console.log('old views', oldViews);
+    }
+    console.log('total votes',Product.all[i].votes );
+    console.log('total views', Product.all[i].showTimes);
+  }
+  
+
+
+
+retrieve();
